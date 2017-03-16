@@ -1,3 +1,10 @@
+/*
+Fichier : VM.C
+Auteur : AUBERVAL/DELAHAYE
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "vm_codops.h"
