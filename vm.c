@@ -3,7 +3,7 @@
 #include "vm_codops.h"
 
 #define DEBUG 1
-
+// Encore essais
 int pc=0;
 int sp=0;
 int code[100];
