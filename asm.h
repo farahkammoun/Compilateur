@@ -4,7 +4,24 @@ Fichier : ASM.H
 Date 	: 07/03/2017
 Auteurs : AUBERVAL/DELAHAYE
 
+*************************************************
+*************************************************
+
+
+		ADDINSTRUCTION 
+		PARSASM		----> ADDLABEL ----> 	LABEL 
+				----> DECODEINSTRUCTION ----> ADDCODE	
+							----> 
+							----> 		
+
+MAIN 	----> 	RESOLVEREFERENCE ----> 	FINDLABEL
+		PRINTLABELS
+		DUMPBINARYCODE
+		GENERATEBIN
+
+
 *************************************************/
+
 #ifndef _ASM_H_
 #define _ASM_H_
 
@@ -24,6 +41,7 @@ int currentRef   = 0;
 /*************************************************
 *****************Structures :*********************
 /*************************************************/
+
 struct instructionName 
 {
 	char *name;	// Le nom de l'instruction
@@ -140,13 +158,24 @@ courante, incrémentée après l’ajout de chaque instruction.
 Complète le tableau de structure contenant les labels (variable globale)
 
 Fonctions utiles:
-fgets(line,100,fin);
-strstr(line,"end");
+	fgets(line,100,fin);
+	strstr(line,"end");
 */
 void addLabel(char *labelname,int addr)
 {
 	strcpy(tabLabels[MAX_LABELS_SIZE] -> labelname, label);//remplir la structure
 	tabLabels[MAX_LABELS_SIZE] -> addr = addr;
+	
+}
+/*************************************************
+*********************findLabel*********************
+Fonction permettant de trouver le nom du label
+Il faudrait parcourir tout le code pour trouver 
+le label et le mettre dans la structure label
+*/
+void findLabel()
+{
+	
 	
 }
 /*************************************************
@@ -174,6 +203,11 @@ Cette fonction fait le gros du travail:
 • Appel addCode pour remplir codeSegment (tableau global unsigned int)
 • Ajoute des références si l'instruction décodée fait référence à une étiquette encore
 inconnue (tableau global)
+
+en gros il faut que l'on compare (avec un if) si l'instruction décodée fait référence à une étiquette encore
+	inconnue (tableau global) alors on ajoute une ref/un label
+si j'ai un jump false, il faut aller mettre l'instruction 
+*/
 */
 void decodeInstruction(char *line)
 {
@@ -184,12 +218,17 @@ void decodeInstruction(char *line)
 	{
 		i++;
 	}
-	
+/*
+	if (label == -1) //il faut utiliser la fonction findLabel 
+	{
+		label++; // on va chercher s'il y a une reference inconnue, (un label) et du coup en ajouter une 
+	}
+*/	
 	addCode();	
 }
 /**************************************************
 *********************addCode***********************
-	
+ajoute le code
 */
 void addCode()
 {
@@ -199,6 +238,10 @@ void addCode()
 ****************resolveReferences*****************
 fonction qui, lorsqu'elle voit -1, devra mettre l'etiquette 
 label
+donc venant de findLabel? en gros ce que va retourner findLabel
+se retrouvera ici pour resoudre si jamais c'est un label non identifie 
+
+il doit renvoyer la ligne de l'etiquette
 */
 void resolveReferences()
 {
@@ -211,7 +254,9 @@ void resolveReferences()
 Fonction de désassamblage du code (fonction de vérification)
 Elle permet de générer le code assembleur correspondant aux OP_CODE stockés
 dans codeSegment
-Sa sortie peut être en console ou dans un fichier.
+Sortie :
+	Fichier.ASM
+	Ou dans la console
 */
 void dumpBinaryCode()
 {
@@ -220,6 +265,8 @@ void dumpBinaryCode()
 /*************************************************
 ****************generateBinaryCode****************
 Fontion qui va generer le code binaire
+Sortie :
+	Fichier.BIN
 */
 void generateBinaryCode()
 {
